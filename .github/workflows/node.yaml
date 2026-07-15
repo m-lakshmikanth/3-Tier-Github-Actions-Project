@@ -1,0 +1,32 @@
+name: Node.js CICD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23'
+
+      - name: Front-end Syntax Check
+        run: |
+          cd client
+          find . -name "*.js" -exec node --check {} +
+
+      - name: Back-end Syntax Check
+        run: |
+          cd api
+          find . -name "*.js" -exec node --check {} +
